@@ -1,34 +1,84 @@
 #pragma once // LESS PORTABLE
 #include <iostream>
 #include <string>
-
-//WHENEVER YOU USE DYNAMIC MEMORY, COPY CONSTRUCTOR, DESTRUCTOR, AND OVERLOADING OPERATOR = 
+using namespace std;
 
 struct node {
 	char data;
+	node* prev;
 	node* left;
 	node* right;
+
+	node(char data) {
+		this->data = data;
+		left = NULL;
+		right = NULL;
+		prev = NULL;
+	}
+
+	node() {
+		left = NULL;
+		right = NULL;
+		prev = NULL;
+	}
 };
 
-class binaryTree{
-	node* root;
+class BT{
+protected: node* root;
 
 public:
-	// using constructor initializer to set root to NULL
-	binaryTree() : root(NULL) {}
-	//copy constructor
-	binaryTree(const binaryTree &bin) {
-		if (isEmpty())
+	BT() { 
+		root = NULL;
+	}
+	~BT();
+	node* getRoot() { return root; }
+	void setRoot(node* root) { this->root = root; }
+	void destroy(node*);
+	void inorder(node* p) const
+	{
+		if (p != NULL)
 		{
-			root = NULL;
+			inorder(p->left);
+			cout << p->data << " ";
+			inorder(p->right);
 		}
-	
-	};
-	~binaryTree();
+	}
 
-	void addNode(){}
-	// helper function
-	inline bool isEmpty() { return root==NULL; }
+	void preorder(node* p) const
+	{
+		if (p != NULL)
+		{
+			cout << p->data << " ";
+			preorder(p->left);
+			preorder(p->right);
+		}
+	}
+
+	void postorder(node* p) const
+	{
+		if (p != NULL)
+		{
+			postorder(p->left);
+			postorder(p->right);
+			cout << p->data << " ";
+		}
+	}
+
+
+
 
 };
+
+BT::~BT() {
+	destroy(root);
+}
+
+void BT::destroy(node* p) {
+	if (p != NULL) {
+		destroy(p->left);
+		destroy(p->right);
+		cout << "\ninside destroy";
+		delete p;
+	}
+}
 
