@@ -17,6 +17,7 @@ struct node {
 	}
 
 	node() {
+		data = 'h';
 		left = NULL;
 		right = NULL;
 		prev = NULL;
@@ -25,21 +26,26 @@ struct node {
 
 class BT{
 protected: node* root;
+		  // node* traverse;
 
 public:
 	BT() { 
 		root = NULL;
+		//traverse = NULL;
 	}
+
 	~BT();
+	void destroy(node*);
+	// helper functions
 	node* getRoot() { return root; }
 	void setRoot(node* root) { this->root = root; }
-	void destroy(node*);
+	
 	void inorder(node* p) const
 	{
 		if (p != NULL)
 		{
 			inorder(p->left);
-			cout << p->data << " ";
+			cout << " " << p->data << " ";
 			inorder(p->right);
 		}
 	}
@@ -64,13 +70,10 @@ public:
 		}
 	}
 
-
-
-
 };
 
 BT::~BT() {
-	destroy(root);
+	destroy(root); // recursive destructor
 }
 
 void BT::destroy(node* p) {
